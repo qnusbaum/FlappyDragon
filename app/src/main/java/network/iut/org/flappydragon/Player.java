@@ -101,7 +101,6 @@ public class Player {
 */
         this.x += speedX;
         this.y += speedY;
-        this.bitmap = normalBitmap;
     }
 
     protected void changeToNextFrame(){
