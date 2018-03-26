@@ -56,10 +56,19 @@ public class Player {
             // The character is moving up
             Log.i("Move", "Moving up");
             speedY = speedY * 2 / 3 + getSpeedTimeDecrease() / 2;
+            if(this.y == 0){
+                Log.i("Fin", "En bas de l'écran");
+                this.speedY = 0;
+            }
         }else{
             // the character is moving down
-            Log.i("Move", "Moving down");
-            this.speedY += getSpeedTimeDecrease();
+            if(this.y > 0){
+                Log.i("Move", "Moving down");
+                this.speedY += getSpeedTimeDecrease();
+            }else{
+                Log.i("Fin", "En haut de l'écran");
+                this.speedY = 0;
+            }
         }
         if(this.speedY > getMaxSpeed()){
             // speed limit
