@@ -10,7 +10,10 @@ import android.util.Log;
 public class Player {
     /** Static bitmap to reduce memory usage. */
     public static Bitmap globalBitmap;
-    private final Bitmap bitmap;
+    private Bitmap bitmap;
+    private final Bitmap normalBitmap;
+    private final Bitmap upBitmap;
+    private final Bitmap middleBitmap;
     private final byte frameTime;
     private int frameTimeCounter;
     private final int width;
@@ -20,6 +23,7 @@ public class Player {
     private float speedX;
     private float speedY;
     private GameView view;
+    private Context context;
 
     public Player(Context context, GameView view) {
         if(globalBitmap == null) {
@@ -34,6 +38,9 @@ public class Player {
         this.view = view;
         this.x = this.view.getWidth() / 6;
         this.speedX = 0;
+        normalBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame1);
+        upBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame3);
+        middleBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame2);
     }
 
     public void onTap() {
@@ -55,11 +62,21 @@ public class Player {
         if(speedY < 0){
             // The character is moving up
             Log.i("Move", "Moving up");
+            this.bitmap = upBitmap;
             speedY = speedY * 2 / 3 + getSpeedTimeDecrease() / 2;
+            if(this.y <= 0){
+                Log.i("Position", "En haut de l'écran");
+                this.y=1;
+            }
         }else{
             // the character is moving down
-            Log.i("Move", "Moving down");
-            this.speedY += getSpeedTimeDecrease();
+            if(this.y > 0) {
+                Log.i("Move", "Moving down");
+                this.speedY += getSpeedTimeDecrease();
+                if(this.y ){
+
+                }
+            }
         }
         if(this.speedY > getMaxSpeed()){
             // speed limit
@@ -80,6 +97,7 @@ public class Player {
 */
         this.x += speedX;
         this.y += speedY;
+        this.bitmap = normalBitmap;
     }
 
     protected void changeToNextFrame(){
