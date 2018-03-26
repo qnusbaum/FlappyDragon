@@ -53,21 +53,25 @@ public class Player {
         changeToNextFrame();
 
         if(speedY < 0){
-            // The character is moving up
-            Log.i("Move", "Moving up");
-            speedY = speedY * 2 / 3 + getSpeedTimeDecrease() / 2;
             if(this.y <= 0){
                 Log.i("Position", "En haut de l'écran");
+                this.speedY=0;
                 this.y=1;
+            }else{
+                // The character is moving up
+                Log.i("Move", "Moving up");
+                speedY = speedY * 2 / 3 + getSpeedTimeDecrease() / 2;
             }
+
         }else{
             // the character is moving down
-            if(this.y > 0) {
-                Log.i("Move", "Moving down");
+            Log.i("Move", "Moving down");
+            if(this.y >= view.getHeight()-height){
+                Log.i("Position", "En bas de l'écran");
+                this.y = view.getHeight()-height;
+                this.speedY = 0;
+            }else{
                 this.speedY += getSpeedTimeDecrease();
-                if(this.y ){
-
-                }
             }
         }
         if(this.speedY > getMaxSpeed()){
