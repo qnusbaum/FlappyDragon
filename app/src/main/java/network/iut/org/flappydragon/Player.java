@@ -5,15 +5,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.os.CountDownTimer;
 import android.util.Log;
 
 public class Player {
     /** Static bitmap to reduce memory usage. */
     public static Bitmap globalBitmap;
     private Bitmap bitmap;
-    private final Bitmap normalBitmap;
-    private final Bitmap upBitmap;
+    private final Bitmap downBitmap;
     private final Bitmap middleBitmap;
+    private final Bitmap upBitmap;
     private final byte frameTime;
     private int frameTimeCounter;
     private final int width;
@@ -23,7 +24,6 @@ public class Player {
     private float speedX;
     private float speedY;
     private GameView view;
-    private Context context;
 
     public Player(Context context, GameView view) {
         if(globalBitmap == null) {
@@ -38,7 +38,7 @@ public class Player {
         this.view = view;
         this.x = this.view.getWidth() / 6;
         this.speedX = 0;
-        normalBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame1);
+        downBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame1);
         upBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame3);
         middleBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame2);
     }
@@ -46,6 +46,8 @@ public class Player {
     public void onTap() {
         this.speedY = getTabSpeed();
         this.y += getPosTabIncrease();
+        Log.i("wings down", "Moving up");
+        this.bitmap = upBitmap;
     }
 
     private float getPosTabIncrease() {
@@ -63,7 +65,6 @@ public class Player {
             if(this.y <= 0){
                 Log.i("Position", "En haut de l'écran");
                 this.speedY=0;
-                this.bitmap = upBitmap;
                 this.y=1;
             }else{
                 // The character is moving up
@@ -73,7 +74,8 @@ public class Player {
 
         }else{
             // the character is moving down
-            Log.i("Move", "Moving down");
+            Log.i("Move", "Moving down with up wings");
+            this.bitmap = downBitmap;
             if(this.y >= view.getHeight()-height){
                 Log.i("Position", "En bas de l'écran");
                 this.y = view.getHeight()-height;
