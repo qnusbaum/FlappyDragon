@@ -3,10 +3,12 @@ package network.iut.org.flappydragon;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.text.Layout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Button;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,6 +21,7 @@ public class GameView extends SurfaceView implements Runnable {
     private TimerTask timerTask;
     private Player player;
     private Background background;
+    private Button restart;
 
     public GameView(Context context) {
         super(context);
@@ -45,6 +48,11 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         return true;
+    }
+
+    public void onLoose() {
+        System.out.println("perdu");
+        restart = (Button) findViewById(R.id.restart);
     }
 
     private void resume() {

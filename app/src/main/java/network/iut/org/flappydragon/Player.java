@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 public class Player {
     /** Static bitmap to reduce memory usage. */
@@ -66,6 +68,7 @@ public class Player {
                 Log.i("Position", "En haut de l'écran");
                 this.speedY=0;
                 this.y=1;
+                view.onLoose();
             }else{
                 // The character is moving up
                 Log.i("Move", "Moving up");
@@ -80,6 +83,7 @@ public class Player {
                 Log.i("Position", "En bas de l'écran");
                 this.y = view.getHeight()-height;
                 this.speedY = 0;
+                view.onLoose();
             }else{
                 this.speedY += getSpeedTimeDecrease();
             }
