@@ -24,28 +24,12 @@ public class Background {
         height = context.getResources().getDisplayMetrics().heightPixels;
         width = context.getResources().getDisplayMetrics().widthPixels;
         background1 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer1, width, height);
-        background2 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer2, width, height);
-        background3 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer3, width, height);
         background4 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer4, width, height);
-        background5 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer5, width, height);
-        background6 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer1, width, height);
-        background7 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer2, width, height);
-        background8 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer3, width, height);
-        background9 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer4, width, height);
-        background10 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer5, width, height);
         this.view = view;
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(background1, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background2, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background3, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
+        canvas.drawBitmap(background1, new Rect(0, 0, background1.getWidth()/2, background1.getHeight()), new Rect(0, 0, width, height), null);
         canvas.drawBitmap(background4, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background5, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background6, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background7, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background8, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background9, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background10, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
     }
 }
