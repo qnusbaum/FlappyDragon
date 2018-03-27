@@ -14,7 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GameView extends SurfaceView implements Runnable {
-    public static final long UPDATE_INTERVAL = 20; // = 20 FPS
+    public static final long UPDATE_INTERVAL = 10; // = 20 FPS
     private SurfaceHolder holder;
     private boolean paused = true;
     private Timer timer = new Timer();
@@ -96,7 +96,11 @@ public class GameView extends SurfaceView implements Runnable {
     private void draw() {
         while(!holder.getSurface().isValid()){
 			/*wait*/
-            try { Thread.sleep(10); } catch (InterruptedException e) { e.printStackTrace(); }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         Canvas canvas = holder.lockCanvas();
         if (canvas != null) {

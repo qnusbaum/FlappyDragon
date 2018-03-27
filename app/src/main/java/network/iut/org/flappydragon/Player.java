@@ -11,7 +11,9 @@ import android.view.View;
 import android.widget.Button;
 
 public class Player {
-    /** Static bitmap to reduce memory usage. */
+    /**
+     * Static bitmap to reduce memory usage.
+     */
     public static Bitmap globalBitmap;
     private Bitmap bitmap;
     private final Bitmap downBitmap;
@@ -28,8 +30,12 @@ public class Player {
     private GameView view;
 
     public Player(Context context, GameView view) {
+        int height = context.getResources().getDisplayMetrics().heightPixels;
+        int width = context.getResources().getDisplayMetrics().widthPixels;
+
         if(globalBitmap == null) {
-            globalBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame1);
+            Log.e("TEST", "Height : " + height + ", width : " + width);
+            globalBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame1, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
         }
         this.bitmap = globalBitmap;
         this.width = this.bitmap.getWidth();
@@ -38,11 +44,11 @@ public class Player {
         this.y = context.getResources().getDisplayMetrics().heightPixels / 2;	// Startposition in the middle of the screen
 
         this.view = view;
-        this.x = this.view.getWidth() / 6;
+        this.x = this.width / 6;
         this.speedX = 0;
-        downBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame1);
-        upBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame3);
-        middleBitmap = Util.getScaledBitmapAlpha8(context, R.drawable.frame2);
+        downBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame1, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
+        middleBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame2, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
+        upBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame3, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
     }
 
     public void onTap() {
@@ -63,8 +69,8 @@ public class Player {
     public void move() {
         changeToNextFrame();
 
-        if(speedY < 0){
-            if(this.y <= 0){
+        if (speedY < 0) {
+            if (this.y <= 0) {
                 Log.i("Position", "En haut de l'écran");
                 this.speedY=0;
                 this.y=1;
@@ -75,20 +81,19 @@ public class Player {
                 speedY = speedY * 2 / 3 + getSpeedTimeDecrease() / 2;
             }
 
-        }else{
-            // the character is moving down
+        } else {
             Log.i("Move", "Moving down with up wings");
             this.bitmap = downBitmap;
             if(this.y >= view.getHeight()-height){
                 Log.i("Position", "En bas de l'écran");
-                this.y = view.getHeight()-height;
+                this.y = view.getHeight() - height;
                 this.speedY = 0;
                 view.onLoose();
             }else{
                 this.speedY += getSpeedTimeDecrease();
             }
         }
-        if(this.speedY > getMaxSpeed()){
+        if (this.speedY > getMaxSpeed()) {
             // speed limit
             this.speedY = getMaxSpeed();
         }
@@ -109,9 +114,9 @@ public class Player {
         this.y += speedY;
     }
 
-    protected void changeToNextFrame(){
+    protected void changeToNextFrame() {
         this.frameTimeCounter++;
-        if(this.frameTimeCounter >= this.frameTime){
+        if (this.frameTimeCounter >= this.frameTime) {
             //TODO Change frame
             this.frameTimeCounter = 0;
         }
@@ -126,6 +131,6 @@ public class Player {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(bitmap, x, y , null);
+        canvas.drawBitmap(bitmap, x, y, null);
     }
 }
