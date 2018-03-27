@@ -10,15 +10,7 @@ public class Background {
     private int width;
     private GameView view;
     private Bitmap background1;
-    private Bitmap background2;
-    private Bitmap background3;
     private Bitmap background4;
-    private Bitmap background5;
-    private Bitmap background6;
-    private Bitmap background7;
-    private Bitmap background8;
-    private Bitmap background9;
-    private Bitmap background10;
 
     public Background(Context context, GameView view) {
         height = context.getResources().getDisplayMetrics().heightPixels;
@@ -29,7 +21,14 @@ public class Background {
     }
 
     public void draw(Canvas canvas) {
-        canvas.drawBitmap(background1, new Rect(0, 0, background1.getWidth()/2, background1.getHeight()), new Rect(0, 0, width, height), null);
-        canvas.drawBitmap(background4, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
+         canvas.drawBitmap(background1,
+                 new Rect(0, 0, background1.getWidth()/2, background1.getHeight()),
+                 new Rect(0, 0, background1.getWidth(), height),
+                 null);
+         canvas.drawBitmap(background1,
+                 new Rect(0, 0, background1.getWidth()/2, background1.getHeight()),
+                 new Rect(background1.getWidth(), 0, background1.getWidth(), height),
+                 null);
+         canvas.drawBitmap(background4, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
     }
 }
