@@ -11,14 +11,18 @@ public class Background {
     private GameView view;
     private Bitmap background1;
     private Bitmap background4;
+    private Bitmap background5;
     private int xTranslation;
     private int xTranslationArbre;
+    private int xTranslationSol;
+
 
     public Background(Context context, GameView view) {
         height = context.getResources().getDisplayMetrics().heightPixels;
         width = context.getResources().getDisplayMetrics().widthPixels;
         background1 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer1, width, height);
         background4 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer4, width, height);
+        background5 = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.layer5, width, height);
         this.view = view;
         xTranslation=0;
     }
@@ -50,6 +54,20 @@ public class Background {
                 null);
         if( xTranslationArbre <= -background1.getWidth()){
             xTranslationArbre=0;
+        }
+
+        //Gestion du sol
+        canvas.drawBitmap(background5,
+                new Rect(0, 0, background5.getWidth(), background5.getHeight()),
+                new Rect(+xTranslationSol, 0, width * background5.getWidth() /  background5.getHeight()+xTranslationSol, height),
+                null);
+        xTranslationSol -=10;
+        canvas.drawBitmap(background5,
+                new Rect(0, 0, background5.getWidth(), background5.getHeight()),
+                new Rect(background5.getWidth()+xTranslationSol, 0, (width * background5.getWidth() /  background5.getHeight())*2+xTranslationSol, height),
+                null);
+        if( xTranslationSol <= -background5.getWidth()){
+            xTranslationSol=0;
         }
     }
 }
