@@ -8,6 +8,8 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,13 +20,15 @@ public class GameView extends SurfaceView implements Runnable {
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Player player;
-    private Ennemy ennemy;
+    private List<Ennemy> ennemies;
     private Background background;
+    private Context context;
 
     public GameView(Context context) {
         super(context);
+        this.context = context;
         player = new Player(context, this);
-        ennemy = new Ennemy(context, this);
+        ennemies = new ArrayList<>();
         background = new Background(context, this);
         holder = getHolder();
         new Thread(new Runnable() {
@@ -89,6 +93,19 @@ public class GameView extends SurfaceView implements Runnable {
         //      collision = true;
         //  }
         //}
+        Log.e("RUN","On run l'application");
+        Timer timer = new Timer();
+        /*timer.schedule(timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                Log.e("Ennemy","On ajoute un ennemi");
+                ennemies.add(new Ennemy(context));
+            }
+        },2000,2000);*/
+        ennemies.add(new Ennemy(context));
+        for(Ennemy ennemy : ennemies){
+            ennemy.move();
+        }
         player.move();
         draw();
     }
@@ -112,7 +129,9 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawCanvas(Canvas canvas) {
         background.draw(canvas);
         player.draw(canvas);
-        ennemy.draw(canvas);
+        for(Ennemy ennemy : ennemies){
+            ennemy.draw(canvas);
+        }
         if (paused) {
             canvas.drawText("PAUSED", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         }

@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Classe Ennemy
  *
@@ -26,9 +29,8 @@ public class Ennemy {
     private int y;
     private float speedX;
     private float speedY;
-    private GameView view;
 
-    public Ennemy(Context context, GameView view) {
+    public Ennemy(Context context) {
         int height = context.getResources().getDisplayMetrics().heightPixels;
         int width = context.getResources().getDisplayMetrics().widthPixels;
         if(globalBitmap == null) {
@@ -39,13 +41,11 @@ public class Ennemy {
         this.width = this.bitmap.getWidth();
         this.height = this.bitmap.getHeight();
         this.frameTime = 3;		// the frame will change every 3 runs
-        this.y = context.getResources().getDisplayMetrics().heightPixels / 2;	// Startposition in the middle of the screen
+        this.x = width;	// Startposition in the middle of the screen
 
-        this.view = view;
-        int nombreAleatoire = 0 + (int)(Math.random() * ((context.getResources().getDisplayMetrics().heightPixels - 0) + 1));
-        this.x = nombreAleatoire;
+        this.y = 0 + (int)(Math.random() * ((context.getResources().getDisplayMetrics().heightPixels - 0) + 1));
 
-        this.speedX = 5;
+        this.speedX = -10;
         downBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.ennemy2, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
         upBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.ennemy3, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
 
@@ -66,14 +66,19 @@ public class Ennemy {
     }
 
     private float getSpeedTimeDecrease() {
-        return view.getHeight() / 320;
+        return height / 320;
     }
 
     private float getMaxSpeed() {
-        return view.getHeight() / 51.2f;
+        return width / 51.2f;
     }
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x, y, null);
+    }
+
+
+    public int  getX(){
+        return this.x;
     }
 }
