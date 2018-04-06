@@ -24,17 +24,17 @@ public class Background {
 
     public void draw(Canvas canvas) {
          canvas.drawBitmap(background1,
-                 new Rect(xTranslation, 0, background1.getWidth(), background1.getHeight()),
-                 new Rect(0, 0, background1.getWidth(), height),
+                 new Rect(0, 0, background1.getWidth(), background1.getHeight()),
+                 new Rect(+xTranslation, 0, background1.getWidth()+xTranslation, height),
                  null);
-         xTranslation +=10;
-        canvas.drawBitmap(background1,
-                new Rect(background1.getWidth()+xTranslation, 0, background1.getWidth(), background1.getHeight()),
-                new Rect(0, 0, background1.getWidth(), height),
+         xTranslation -=10;
+         canvas.drawBitmap(background1,
+                new Rect(0, 0, background1.getWidth(), background1.getHeight()),
+                new Rect(+xTranslation, 0, +xTranslation, height),
                 null);
-         if( xTranslation >= background1.getWidth()){
+         if( xTranslation <= -background1.getWidth()){
              xTranslation=0;
          }
-         canvas.drawBitmap(background4, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width, height), null);
+         canvas.drawBitmap(background4, new Rect(0, 0, background1.getWidth(), background1.getHeight()), new Rect(0, 0, width * background1.getWidth() /  background1.getHeight(), height), null);
     }
 }
