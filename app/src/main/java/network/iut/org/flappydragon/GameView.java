@@ -16,16 +16,19 @@ import java.util.TimerTask;
 public class GameView extends SurfaceView implements Runnable {
     public static final long UPDATE_INTERVAL = 10; // = 20 FPS
     private SurfaceHolder holder;
-    private boolean paused = true;
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Player player;
     private Background background;
-    private Button restart;
+    private boolean start = true;
+    private boolean gameOver = false;
+    private Context context;
 
     public GameView(Context context) {
         super(context);
+        this.context = context;
         player = new Player(context, this);
+//        player.setToMiddle();
         background = new Background(context, this);
         holder = getHolder();
         new Thread(new Runnable() {
@@ -40,11 +43,16 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         performClick();
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            if(paused) {
-                resume();
+            if(start) {
+                start();
             } else {
-                Log.i("PLAYER", "PLAYER TAPPED");
-                this.player.onTap();
+                if (gameOver) {
+                    start = true;
+                    restartGame();
+                } else {
+                    Log.i("PLAYER", "PLAYER TAPPED");
+                    this.player.onTap();
+                }
             }
         }
         return true;
@@ -52,12 +60,25 @@ public class GameView extends SurfaceView implements Runnable {
 
     public void onLoose() {
         System.out.println("perdu");
-        restart = (Button) findViewById(R.id.restart);
+        gameOver = true;
+        stopTimer();
     }
 
-    private void resume() {
-        paused = false;
+    private void start() {
+        start = false;
         startTimer();
+    }
+
+    private void restartGame() {
+        this.player = new Player(context, this);
+//        player.setToMiddle();
+        gameOver = false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GameView.this.run();
+            }
+        });
     }
 
     private void startTimer() {
@@ -112,9 +133,10 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawCanvas(Canvas canvas) {
         background.draw(canvas);
         player.draw(canvas);
-        if (paused) {
-            canvas.drawText("PAUSED", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
+        if (start) {
+            canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
+        } else if (gameOver){
+            canvas.drawText("GAME OVER, TOUCH TO RESTART", canvas.getWidth() / 3, canvas.getHeight() / 2, new Paint());
         }
     }
-
 }

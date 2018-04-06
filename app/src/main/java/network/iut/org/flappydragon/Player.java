@@ -28,6 +28,7 @@ public class Player {
     private float speedX;
     private float speedY;
     private GameView view;
+    private Context context;
 
     public Player(Context context, GameView view) {
         int height = context.getResources().getDisplayMetrics().heightPixels;
@@ -37,11 +38,12 @@ public class Player {
             Log.e("TEST", "Height : " + height + ", width : " + width);
             globalBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame1, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
         }
+        this.context = context;
         this.bitmap = globalBitmap;
         this.width = this.bitmap.getWidth();
         this.height = this.bitmap.getHeight();
         this.frameTime = 3;		// the frame will change every 3 runs
-        this.y = context.getResources().getDisplayMetrics().heightPixels / 2;	// Startposition in the middle of the screen
+        this.y = context.getResources().getDisplayMetrics().heightPixels / 3;	// Startposition in the middle of the screen
 
         this.view = view;
         this.x = this.width / 6;
@@ -132,5 +134,9 @@ public class Player {
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x, y, null);
+    }
+
+    public void setToMiddle() {
+        this.y = context.getResources().getDisplayMetrics().heightPixels / 3;
     }
 }

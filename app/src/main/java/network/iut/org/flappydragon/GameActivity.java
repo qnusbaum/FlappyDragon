@@ -12,12 +12,4 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(new GameView(this));
     }
-
-    public void RestartGame(View view) {
-        View.OnClickListener restartGame = new View.OnClickListener() {
-            public void onClick(View v) {
-                setContentView(new GameView(getApplicationContext()));
-            }
-        };
-    }
 }
