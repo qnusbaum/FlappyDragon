@@ -3,6 +3,7 @@ package network.iut.org.flappydragon;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.util.Log;
 
 import java.util.Timer;
@@ -41,7 +42,7 @@ public class Ennemy {
         this.width = this.bitmap.getWidth();
         this.height = this.bitmap.getHeight();
         this.frameTime = 3;		// the frame will change every 3 runs
-        this.x = width;	// Startposition in the middle of the screen
+        this.x = width;
 
         this.y = 0 + (int)(Math.random() * ((context.getResources().getDisplayMetrics().heightPixels - 0) + 1));
 
@@ -75,6 +76,10 @@ public class Ennemy {
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x, y, null);
+    }
+
+    public Rect getPosition(){
+        return new Rect(x,y,y-height,x-width);
     }
 
 

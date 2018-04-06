@@ -39,7 +39,7 @@ public class Player {
         this.width = this.bitmap.getWidth();
         this.height = this.bitmap.getHeight();
         this.frameTime = 3;		// the frame will change every 3 runs
-        this.y = context.getResources().getDisplayMetrics().heightPixels / 2;	// Startposition in the middle of the screen
+        this.y = context.getResources().getDisplayMetrics().heightPixels / 3;	// Startposition in the middle of the screen
 
         this.view = view;
         this.x = this.width / 6;
@@ -124,6 +124,10 @@ public class Player {
 
     private float getMaxSpeed() {
         return view.getHeight() / 51.2f;
+    }
+
+    public Rect getPosition(){
+        return new Rect(x,y,y-height,x-width);
     }
 
     public void draw(Canvas canvas) {

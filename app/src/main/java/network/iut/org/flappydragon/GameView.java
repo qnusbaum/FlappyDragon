@@ -38,6 +38,7 @@ public class GameView extends SurfaceView implements Runnable {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
+                Log.e("Ennemi","On ajoute un ennemi");
                 ennemies.add(new Ennemy(context));
             }
         }, 0, 500);
@@ -98,14 +99,15 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         //TODO: Check les collisions
-        //For(Ennemy ennemy : ennemies){
-        //  if(player.position.intersect()){
-        //      collision = true;
-        //  }
-        //}
+        boolean collision = false;
         Log.e("RUN","On run l'application");
         for(Ennemy ennemy : ennemies){
             ennemy.move();
+            if(player.getPosition().intersect(ennemy.getPosition())){
+                collision = true;
+                Log.e("Collision","On a touché un papillon ! ");
+                stopTimer();
+            }
         }
         player.move();
         draw();
