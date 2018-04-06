@@ -63,6 +63,7 @@ public class Player {
     private float getTabSpeed() {
         return -view.getHeight() / 16f;
     }
+
     public void move() {
         changeToNextFrame();
 

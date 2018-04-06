@@ -18,11 +18,13 @@ public class GameView extends SurfaceView implements Runnable {
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Player player;
+    private Ennemy ennemy;
     private Background background;
 
     public GameView(Context context) {
         super(context);
         player = new Player(context, this);
+        ennemy = new Ennemy(context, this);
         background = new Background(context, this);
         holder = getHolder();
         new Thread(new Runnable() {
@@ -110,6 +112,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawCanvas(Canvas canvas) {
         background.draw(canvas);
         player.draw(canvas);
+        ennemy.draw(canvas);
         if (paused) {
             canvas.drawText("PAUSED", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         }
