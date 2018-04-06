@@ -81,6 +81,12 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
+        //TODO: Check les collisions
+        //For(Ennemy ennemy : ennemies){
+        //  if(player.position.intersect()){
+        //      collision = true;
+        //  }
+        //}
         player.move();
         draw();
     }
