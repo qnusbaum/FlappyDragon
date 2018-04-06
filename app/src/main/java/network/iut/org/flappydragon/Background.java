@@ -30,7 +30,7 @@ public class Background {
          xTranslation -=10;
          canvas.drawBitmap(background1,
                 new Rect(0, 0, background1.getWidth(), background1.getHeight()),
-                new Rect(+xTranslation, 0, +xTranslation, height),
+                new Rect(background1.getWidth()+xTranslation, 0, background1.getWidth()*2+xTranslation, height),
                 null);
          if( xTranslation <= -background1.getWidth()){
              xTranslation=0;
