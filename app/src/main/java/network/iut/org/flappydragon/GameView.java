@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class GameView extends SurfaceView implements Runnable {
     public static final long UPDATE_INTERVAL = 10; // = 20 FPS
@@ -24,13 +27,20 @@ public class GameView extends SurfaceView implements Runnable {
     private Background background;
     private Context context;
 
-    public GameView(Context context) {
+    public GameView(final Context context) {
         super(context);
         this.context = context;
         player = new Player(context, this);
         ennemies = new ArrayList<>();
         background = new Background(context, this);
         holder = getHolder();
+        Timer t = new Timer();
+        t.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                ennemies.add(new Ennemy(context));
+            }
+        }, 0, 500);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -94,15 +104,6 @@ public class GameView extends SurfaceView implements Runnable {
         //  }
         //}
         Log.e("RUN","On run l'application");
-        Timer timer = new Timer();
-        /*timer.schedule(timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Log.e("Ennemy","On ajoute un ennemi");
-                ennemies.add(new Ennemy(context));
-            }
-        },2000,2000);*/
-        ennemies.add(new Ennemy(context));
         for(Ennemy ennemy : ennemies){
             ennemy.move();
         }
@@ -130,7 +131,11 @@ public class GameView extends SurfaceView implements Runnable {
         background.draw(canvas);
         player.draw(canvas);
         for(Ennemy ennemy : ennemies){
-            ennemy.draw(canvas);
+            if(ennemy.getX() <= 0){
+                ennemy = null;
+            }else{
+                ennemy.draw(canvas);
+            }
         }
         if (paused) {
             canvas.drawText("PAUSED", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
