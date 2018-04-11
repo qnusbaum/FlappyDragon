@@ -47,8 +47,10 @@ public class GameView extends SurfaceView implements Runnable {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.e("Enemy","Create a new enemy");
-                ennemies.add(new Ennemy(context));
+                if(!start) {
+                    Log.e("Enemy", "Create a new enemy");
+                    ennemies.add(new Ennemy(context));
+                }
             }
         }, 0, vitesseSpawn);
         new Thread(new Runnable() {
