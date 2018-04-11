@@ -153,6 +153,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
+     * Codé récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
      * Check pixel-perfectly if two views are colliding
      *
      * @param player player
@@ -194,6 +195,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
+     * Codé récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
      * Get a Bitmap from a specified View
      *
      * @param v View
@@ -217,6 +219,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
+     * Codé récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
      * Check if pixel is not transparent
      *
      * @param pixel int
@@ -227,6 +230,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
+     * Codé récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
      * Get the collision bounds from two rects
      *
      * @param rect1 Rect
