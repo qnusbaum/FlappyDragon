@@ -5,12 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.text.Layout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +22,13 @@ import java.util.concurrent.TimeUnit;
 public class GameView extends SurfaceView implements Runnable {
     public static final long UPDATE_INTERVAL = 10; // = 20 FPS
     private SurfaceHolder holder;
-    private boolean paused = true;
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Player player;
     private List<Ennemy> ennemies;
     private Background background;
+    private boolean start = true;
+    private boolean gameOver = false;
     private Context context;
     private int vitesseSpawn;
 
@@ -61,19 +61,42 @@ public class GameView extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         performClick();
         if(event.getAction() == MotionEvent.ACTION_DOWN){
-            if(paused) {
-                resume();
+            if(start) {
+                start();
             } else {
-                Log.i("PLAYER", "PLAYER TAPPED");
-                this.player.onTap();
+                if (gameOver) {
+                    start = true;
+                    restartGame();
+                } else {
+                    Log.i("PLAYER", "PLAYER TAPPED");
+                    this.player.onTap();
+                }
             }
         }
         return true;
     }
 
-    private void resume() {
-        paused = false;
+    public void onLoose() {
+        System.out.println("perdu");
+        gameOver = true;
+        stopTimer();
+    }
+
+    private void start() {
+        start = false;
         startTimer();
+    }
+
+    private void restartGame() {
+        this.player = new Player(context, this);
+//        player.setToMiddle();
+        gameOver = false;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GameView.this.run();
+            }
+        });
     }
 
     private void startTimer() {
@@ -147,8 +170,10 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
         ennemies.removeAll(toRemove);
-        if (paused) {
-            canvas.drawText("PAUSED", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
+        if (start) {
+            canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
+        } else if (gameOver){
+            canvas.drawText("GAME OVER, TOUCH TO RESTART", canvas.getWidth() / 3, canvas.getHeight() / 2, new Paint());
         }
     }
 

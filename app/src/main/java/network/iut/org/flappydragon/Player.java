@@ -7,6 +7,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 public class Player {
     /**
@@ -26,6 +28,7 @@ public class Player {
     private float speedX;
     private float speedY;
     private GameView view;
+    private Context context;
 
     public Player(Context context, GameView view) {
         int height = context.getResources().getDisplayMetrics().heightPixels;
@@ -35,6 +38,7 @@ public class Player {
             Log.e("TEST", "Height : " + height + ", width : " + width);
             globalBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame1, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
         }
+        this.context = context;
         this.bitmap = globalBitmap;
         this.width = this.bitmap.getWidth();
         this.height = this.bitmap.getHeight();
@@ -70,9 +74,10 @@ public class Player {
         if (speedY < 0) {
             if (this.y <= 0) {
                 Log.i("Position", "En haut de l'écran");
-                this.speedY = 0;
-                this.y = 1;
-            } else {
+                this.speedY=0;
+                this.y=1;
+                view.onLoose();
+            }else{
                 // The character is moving up
                 Log.i("Move", "Moving up");
                 speedY = speedY * 2 / 3 + getSpeedTimeDecrease() / 2;
@@ -85,7 +90,8 @@ public class Player {
                 Log.i("Position", "En bas de l'écran");
                 this.y = view.getHeight() - height;
                 this.speedY = 0;
-            } else {
+                view.onLoose();
+            }else{
                 this.speedY += getSpeedTimeDecrease();
             }
         }
@@ -132,6 +138,10 @@ public class Player {
 
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x, y, null);
+    }
+
+    public void setToMiddle() {
+        this.y = context.getResources().getDisplayMetrics().heightPixels / 3;
     }
 
     public GameView getView() {
