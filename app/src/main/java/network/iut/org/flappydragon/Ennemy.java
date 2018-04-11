@@ -79,7 +79,7 @@ public class Ennemy {
     }
 
     public Rect getPosition(){
-        return new Rect(x,y,y-height,x-width);
+        return new Rect(x,y,x+bitmap.getHeight(),y+bitmap.getWidth());
     }
 
 

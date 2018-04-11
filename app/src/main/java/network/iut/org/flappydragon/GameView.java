@@ -48,7 +48,6 @@ public class GameView extends SurfaceView implements Runnable {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 GameView.this.run();
             }
         }).start();
@@ -135,13 +134,15 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawCanvas(Canvas canvas) {
         background.draw(canvas);
         player.draw(canvas);
+        List<Ennemy> toRemove = new ArrayList<>();
         for(Ennemy ennemy : ennemies){
             if(ennemy.getX() <= 0){
-                ennemies.remove(ennemy);
+                toRemove.add(ennemy);
             }else{
                 ennemy.draw(canvas);
             }
         }
+        ennemies.removeAll(toRemove);
         if (paused) {
             canvas.drawText("PAUSED", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         }
