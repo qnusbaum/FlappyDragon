@@ -91,7 +91,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void restartGame() {
         this.player = new Player(context, this);
-//        player.setToMiddle();
         gameOver = false;
         new Thread(new Runnable() {
             @Override
@@ -164,7 +163,7 @@ public class GameView extends SurfaceView implements Runnable {
         background.draw(canvas);
         player.draw(canvas);
         List<Ennemy> toRemove = new ArrayList<>();
-        for(Ennemy ennemy : ennemies){
+        for(Ennemy ennemy : new ArrayList<Ennemy>(ennemies)){
             if(ennemy.getX() <= 0){
                 toRemove.add(ennemy);
             }else{
