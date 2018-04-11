@@ -2,51 +2,49 @@ package network.iut.org.flappydragon;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
-import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 public class Player {
     /**
      * Static bitmap to reduce memory usage.
      */
     public static Bitmap globalBitmap;
+    private final int height;
+    private final int width;
+    private GameView view;
     private Bitmap bitmap;
     private final Bitmap downBitmap;
     private final Bitmap middleBitmap;
     private final Bitmap upBitmap;
     private final byte frameTime;
     private int frameTimeCounter;
-    private final int width;
-    private final int height;
+    private final int imgWidth;
+    private final int imgHeight;
     private int x;
     private int y;
     private float speedX;
     private float speedY;
-    private GameView view;
     private Context context;
 
     public Player(Context context, GameView view) {
-        int height = context.getResources().getDisplayMetrics().heightPixels;
-        int width = context.getResources().getDisplayMetrics().widthPixels;
+        this.view = view;
+        height = context.getResources().getDisplayMetrics().heightPixels;
+        width = context.getResources().getDisplayMetrics().widthPixels;
 
         if(globalBitmap == null) {
-            Log.e("TEST", "Height : " + height + ", width : " + width);
+            Log.e("TEST", "Height : " + height + ", imgWidth : " + width);
             globalBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame1, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
         }
         this.context = context;
         this.bitmap = globalBitmap;
-        this.width = this.bitmap.getWidth();
-        this.height = this.bitmap.getHeight();
+        this.imgWidth = this.bitmap.getWidth();
+        this.imgHeight = this.bitmap.getHeight();
         this.frameTime = 3;		// the frame will change every 3 runs
-        this.y = context.getResources().getDisplayMetrics().heightPixels / 3;	// Startposition in the middle of the screen
+        this.y = height / 2;	// Startposition in the middle of the screen
 
-        this.view = view;
-        this.x = this.width / 6;
+        this.x = this.imgWidth / 6;
         this.speedX = 0;
         downBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame1, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
         middleBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.frame2, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
@@ -61,11 +59,11 @@ public class Player {
     }
 
     private float getPosTabIncrease() {
-        return - view.getHeight() / 100;
+        return - height / 100;
     }
 
     private float getTabSpeed() {
-        return -view.getHeight() / 16f;
+        return -height / 16f;
     }
 
     void move() {
@@ -86,9 +84,9 @@ public class Player {
         } else {
             Log.i("Move", "Moving down with up wings");
             this.bitmap = downBitmap;
-            if(this.y >= view.getHeight()-height){
+            if(this.y >= height- imgHeight){
                 Log.i("Position", "En bas de l'écran");
-                this.y = view.getHeight() - height;
+                this.y = height - imgHeight;
                 this.speedY = 0;
                 view.onLoose();
             }else{
@@ -125,11 +123,11 @@ public class Player {
     }
 
     private float getSpeedTimeDecrease() {
-        return view.getHeight() / 320;
+        return height / 320;
     }
 
     private float getMaxSpeed() {
-        return view.getHeight() / 51.2f;
+        return height / 51.2f;
     }
 
     public Rect getPosition(){
@@ -142,10 +140,6 @@ public class Player {
 
     public void setToMiddle() {
         this.y = context.getResources().getDisplayMetrics().heightPixels / 3;
-    }
-
-    public GameView getView() {
-        return view;
     }
 
     public int  getX(){

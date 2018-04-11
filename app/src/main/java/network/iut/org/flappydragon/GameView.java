@@ -92,6 +92,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void restartGame() {
         this.player = new Player(context, this);
         gameOver = false;
+        ennemies.clear();
         new Thread(new Runnable() {
             @Override
             public void run() {
