@@ -26,25 +26,29 @@ public class GameView extends SurfaceView implements Runnable {
     private List<Ennemy> ennemies;
     private Background background;
     private Context context;
+    private int vitesseSpawn;
 
     public GameView(final Context context) {
         super(context);
+        vitesseSpawn = 500;
         this.context = context;
         player = new Player(context, this);
         ennemies = new ArrayList<>();
         background = new Background(context, this);
         holder = getHolder();
+        //On créer un timer afin de créer des ennemis à intervalle de temps régulier
         Timer t = new Timer();
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.e("Ennemi","On ajoute un ennemi");
+                Log.e("Enemy","Create a new enemy");
                 ennemies.add(new Ennemy(context));
             }
-        }, 0, 500);
+        }, 0, vitesseSpawn);
         new Thread(new Runnable() {
             @Override
             public void run() {
+
                 GameView.this.run();
             }
         }).start();
@@ -98,15 +102,14 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        //TODO: Check les collisions
-        boolean collision = false;
+        //TODO: Check collisions
         Log.e("RUN","On run l'application");
         for(Ennemy ennemy : ennemies){
             ennemy.move();
             if(player.getPosition().intersect(ennemy.getPosition())){
-                collision = true;
-                Log.e("Collision","On a touché un papillon ! ");
+                Log.e("Collision","We touch a butterfly ! ");
                 stopTimer();
+                //Use 'loose' method
             }
         }
         player.move();
@@ -134,7 +137,7 @@ public class GameView extends SurfaceView implements Runnable {
         player.draw(canvas);
         for(Ennemy ennemy : ennemies){
             if(ennemy.getX() <= 0){
-                ennemy = null;
+                ennemies.remove(ennemy);
             }else{
                 ennemy.draw(canvas);
             }
