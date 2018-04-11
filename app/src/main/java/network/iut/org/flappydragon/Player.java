@@ -68,7 +68,7 @@ public class Player {
         return -view.getHeight() / 16f;
     }
 
-    public void move() {
+    void move() {
         changeToNextFrame();
 
         if (speedY < 0) {
@@ -132,11 +132,31 @@ public class Player {
         return view.getHeight() / 51.2f;
     }
 
+    public Rect getPosition(){
+        return new Rect(x,y,x+bitmap.getHeight(),y+bitmap.getWidth());
+    }
+
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x, y, null);
     }
 
     public void setToMiddle() {
         this.y = context.getResources().getDisplayMetrics().heightPixels / 3;
+    }
+
+    public GameView getView() {
+        return view;
+    }
+
+    public int  getX(){
+        return this.x;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public int getY(){
+        return this.y;
     }
 }
