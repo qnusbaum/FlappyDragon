@@ -137,7 +137,7 @@ public class GameView extends SurfaceView implements Runnable {
             ennemy.move();
             if(isCollisionDetected(player,player.getX(),player.getY(), ennemy,ennemy.getX(),ennemy.getY())){
                 Log.e("Collision","We touch a butterfly ! ");
-                stopTimer();
+                onLoose();
             }
         }
         player.move();

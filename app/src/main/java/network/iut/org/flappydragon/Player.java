@@ -68,7 +68,7 @@ public class Player {
         return -view.getHeight() / 16f;
     }
 
-    public void move() {
+    void move() {
         changeToNextFrame();
 
         if (speedY < 0) {
