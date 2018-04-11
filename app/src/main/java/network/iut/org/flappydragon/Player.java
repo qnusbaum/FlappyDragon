@@ -133,4 +133,20 @@ public class Player {
     public void draw(Canvas canvas) {
         canvas.drawBitmap(bitmap, x, y, null);
     }
+
+    public GameView getView() {
+        return view;
+    }
+
+    public int  getX(){
+        return this.x;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public int getY(){
+        return this.y;
+    }
 }

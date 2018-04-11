@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -43,7 +44,6 @@ public class Ennemy {
         this.height = this.bitmap.getHeight();
         this.frameTime = 3;		// the frame will change every 3 runs
         this.x = width;
-
         this.y = 0 + (int)(Math.random() * ((context.getResources().getDisplayMetrics().heightPixels - 0) + 1));
 
         this.speedX = -10;
@@ -82,8 +82,15 @@ public class Ennemy {
         return new Rect(x,y,x+bitmap.getHeight(),y+bitmap.getWidth());
     }
 
+    public Bitmap getBitmap(){
+        return this.globalBitmap;
+    }
 
     public int  getX(){
         return this.x;
+    }
+
+    public int getY(){
+        return this.y;
     }
 }
