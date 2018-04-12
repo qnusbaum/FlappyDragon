@@ -1,12 +1,14 @@
 package network.iut.org.flappydragon;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.text.Layout;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import network.iut.org.flappydragon.entity.Ennemy;
+import network.iut.org.flappydragon.entity.Player;
 
 public class GameView extends SurfaceView implements Runnable {
     public static final long UPDATE_INTERVAL = 10; // = 20 FPS
@@ -47,8 +49,10 @@ public class GameView extends SurfaceView implements Runnable {
         t.schedule(new TimerTask() {
             @Override
             public void run() {
-                Log.e("Enemy","Create a new enemy");
-                ennemies.add(new Ennemy(context));
+                if(!start) {
+                    Log.e("Enemy", "Create a new enemy");
+                    ennemies.add(new Ennemy(context,10));
+                }
             }
         }, 0, vitesseSpawn);
         new Thread(new Runnable() {
@@ -92,6 +96,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void restartGame() {
         this.player = new Player(context, this);
         gameOver = false;
+        ennemies.clear();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -129,7 +134,6 @@ public class GameView extends SurfaceView implements Runnable {
 
     @Override
     public void run() {
-        //TODO: Check collisions
         Log.e("RUN","On run l'application");
         boolean collision;
         for(Ennemy ennemy : ennemies){
@@ -174,7 +178,28 @@ public class GameView extends SurfaceView implements Runnable {
         if (start) {
             canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         } else if (gameOver){
-            canvas.drawText("GAME OVER, TOUCH TO RESTART", canvas.getWidth() / 3, canvas.getHeight() / 2, new Paint());
+            getHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(R.string.youLoose);
+                    String messageScore = "";
+                    builder.setMessage(messageScore+" X secondes")
+                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    restartGame();
+                                }
+                            })
+                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    System.exit(0);
+                                }
+                            });
+                    builder.setCancelable(false);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
         }
     }
 
