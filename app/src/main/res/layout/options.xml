@@ -77,19 +77,21 @@
         app:layout_constraintVertical_bias="0.498">
 
         <RadioButton
-            android:id="@+id/radioButton6"
+            android:id="@+id/btnNoob"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
             android:layout_weight="1"
             android:text="@string/noob"/>
 
         <RadioButton
+            android:id="@+id/btnCasual"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
             android:layout_weight="1"
             android:text="@string/casual"/>
 
         <RadioButton
+            android:id="@+id/btnPGM"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
