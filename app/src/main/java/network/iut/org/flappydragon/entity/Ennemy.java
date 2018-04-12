@@ -1,4 +1,4 @@
-package network.iut.org.flappydragon;
+package network.iut.org.flappydragon.entity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,6 +9,9 @@ import android.view.View;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import network.iut.org.flappydragon.R;
+import network.iut.org.flappydragon.Util;
 
 /**
  * Classe Ennemy

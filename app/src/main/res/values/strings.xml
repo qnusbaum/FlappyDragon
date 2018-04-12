@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">FlappyDragon</string>
     <string name="youLoose">Vous avez perdu ! </string>
+    <string name="score">Votre score est de : </string>
     <string name="restart">Recommencer </string>
-    <string name="exit">Quitter </string>
+    <string name="textRestart">Voulez-vous recommencer ? </string>
+    <string name="goMenu">Retour au menu </string>
 </resources>

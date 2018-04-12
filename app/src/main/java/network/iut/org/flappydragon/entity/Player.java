@@ -1,10 +1,14 @@
-package network.iut.org.flappydragon;
+package network.iut.org.flappydragon.entity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
+
+import network.iut.org.flappydragon.GameView;
+import network.iut.org.flappydragon.R;
+import network.iut.org.flappydragon.Util;
 
 public class Player {
     /**
@@ -66,7 +70,7 @@ public class Player {
         return -height / 16f;
     }
 
-    void move() {
+    public void move() {
         changeToNextFrame();
 
         if (speedY < 0) {
