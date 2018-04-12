@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 
 /**
  * Created by Android on 11/04/2018.
@@ -30,7 +31,7 @@ public class MenuGame extends Activity {
                 initMenu();
             }
         });
-
+        RadioGroup 
     }
 
     public void initMenu() {
