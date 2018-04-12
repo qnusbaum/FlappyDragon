@@ -1,12 +1,15 @@
 package network.iut.org.flappydragon;
 
+import android.app.AlertDialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.text.Layout;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,9 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.widget.Toast;
 
 public class GameView extends SurfaceView implements Runnable {
     public static final long UPDATE_INTERVAL = 10; // = 20 FPS
@@ -49,7 +53,7 @@ public class GameView extends SurfaceView implements Runnable {
             public void run() {
                 if(!start) {
                     Log.e("Enemy", "Create a new enemy");
-                    ennemies.add(new Ennemy(context));
+                    ennemies.add(new Ennemy(context,10));
                 }
             }
         }, 0, vitesseSpawn);
@@ -177,7 +181,28 @@ public class GameView extends SurfaceView implements Runnable {
         if (start) {
             canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         } else if (gameOver){
-            canvas.drawText("GAME OVER, TOUCH TO RESTART", canvas.getWidth() / 3, canvas.getHeight() / 2, new Paint());
+            //canvas.drawText("GAME OVER, TOUCH TO RESTART", canvas.getWidth() / 3, canvas.getHeight() / 2, new Paint());
+            getHandler().post(new Runnable() {
+                @Override
+                public void run() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle(R.string.youLoose);
+                    builder.setMessage(R.string.youLoose)
+                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    restartGame();
+                                }
+                            })
+                            .setNegativeButton(R.string.exit, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    restartGame();
+                                }
+                            });
+                    builder.setCancelable(false);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            });
         }
     }
 

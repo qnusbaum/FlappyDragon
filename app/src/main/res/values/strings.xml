@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">FlappyDragon</string>
+    <string name="youLoose">Vous avez perdu ! </string>
+    <string name="restart">Recommencer </string>
+    <string name="exit">Quitter </string>
 </resources>

@@ -32,7 +32,7 @@ public class Ennemy {
     private float speedX;
     private float speedY;
 
-    public Ennemy(Context context) {
+    public Ennemy(Context context,int speedX) {
         int height = context.getResources().getDisplayMetrics().heightPixels;
         int width = context.getResources().getDisplayMetrics().widthPixels;
         if(globalBitmap == null) {
@@ -46,7 +46,7 @@ public class Ennemy {
         this.x = width;
         this.y = 0 + (int)(Math.random() * ((context.getResources().getDisplayMetrics().heightPixels - 0) + 1));
 
-        this.speedX = -10;
+        this.speedX = -speedX;
         downBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.ennemy2, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
         upBitmap = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.ennemy3, Float.valueOf(height / 10f).intValue(), Float.valueOf(width / 10f).intValue());
 
