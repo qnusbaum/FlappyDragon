@@ -31,7 +31,7 @@ public class MenuGame extends Activity {
                 initMenu();
             }
         });
-        RadioGroup 
+        //RadioGroup
     }
 
     public void initMenu() {
