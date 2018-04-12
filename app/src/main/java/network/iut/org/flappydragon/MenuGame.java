@@ -11,25 +11,44 @@ import android.widget.Button;
 
 public class MenuGame extends Activity {
 
-
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        setContentView(R.layout.menu_game);
         super.onCreate(savedInstanceState);
+        initMenu();
+    }
+
+    public void initGame() {
+        setContentView(new GameView(getApplicationContext()));
+    }
+
+    public void initOption() {
+        setContentView(R.layout.options);
+        Button retour = (Button) findViewById(R.id.btnRetour);
+        retour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMenu();
+            }
+        });
+
+    }
+
+    public void initMenu() {
+        setContentView(R.layout.menu_game);
         Button jouer = (Button) findViewById(R.id.btnJouer);
         Button option = (Button) findViewById(R.id.btnOptions);
 
         jouer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(new GameView(getApplicationContext()));
+                initGame();
             }
         });
 
         option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setContentView(R.layout.options);
+                initOption();
             }
         });
     }
