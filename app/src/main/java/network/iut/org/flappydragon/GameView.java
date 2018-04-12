@@ -192,7 +192,7 @@ public class GameView extends SurfaceView implements Runnable {
                             })
                             .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    restartGame();
+                                    System.exit(0);
                                 }
                             });
                     builder.setCancelable(false);
