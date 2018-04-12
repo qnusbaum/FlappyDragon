@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
+import network.iut.org.flappydragon.View.GameView;
+
 public class Background {
     private int height;
     private int width;
