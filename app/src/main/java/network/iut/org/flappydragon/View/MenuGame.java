@@ -1,4 +1,4 @@
-package network.iut.org.flappydragon;
+package network.iut.org.flappydragon.View;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import network.iut.org.flappydragon.R;
 
 /**
  * Created by Android on 11/04/2018.
