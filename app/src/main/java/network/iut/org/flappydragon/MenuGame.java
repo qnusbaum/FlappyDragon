@@ -49,10 +49,10 @@ public class MenuGame extends Activity {
         Button jouer = (Button) findViewById(R.id.btnJouer);
         Button option = (Button) findViewById(R.id.btnOptions);
 
-        SharedPreferences sharedPref = .getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.saved_high_score_key), newHighScore);
-        editor.commit();
+//        SharedPreferences sharedPref = .getPreferences(Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedPref.edit();
+//        editor.putInt(getString(R.string.saved_high_score_key), newHighScore);
+//        editor.commit();
 
         jouer.setOnClickListener(new View.OnClickListener() {
             @Override
