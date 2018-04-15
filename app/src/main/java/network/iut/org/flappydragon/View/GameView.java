@@ -21,7 +21,7 @@ import java.util.TimerTask;
 
 import network.iut.org.flappydragon.Background;
 import network.iut.org.flappydragon.R;
-import network.iut.org.flappydragon.entity.Ennemy;
+import network.iut.org.flappydragon.entity.Enemy;
 import network.iut.org.flappydragon.entity.Player;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -30,19 +30,19 @@ public class GameView extends SurfaceView implements Runnable {
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Player player;
-    private List<Ennemy> ennemies;
+    private List<Enemy> enemies;
     private Background background;
     private boolean start = true;
     private boolean gameOver = false;
     private Context context;
-    private int vitesseSpawn;
+    private int speedSpawn;
 
     public GameView(final Context context) {
         super(context);
-        vitesseSpawn = 500;
+        speedSpawn = 500;
         this.context = context;
         player = new Player(context, this);
-        ennemies = new ArrayList<>();
+        enemies = new ArrayList<>();
         background = new Background(context, this);
         holder = getHolder();
         //On créer un timer afin de créer des ennemis à intervalle de temps régulier
@@ -52,10 +52,10 @@ public class GameView extends SurfaceView implements Runnable {
             public void run() {
                 if(!start) {
                     Log.e("Enemy", "Create a new enemy");
-                    ennemies.add(new Ennemy(context,10));
+                    enemies.add(new Enemy(context,10));
                 }
             }
-        }, 0, vitesseSpawn);
+        }, 0, speedSpawn);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -97,7 +97,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void restartGame() {
         this.player = new Player(context, this);
         gameOver = false;
-        ennemies.clear();
+        enemies.clear();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -136,9 +136,9 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         Log.e("RUN","On run l'application");
-        for(Ennemy ennemy : ennemies){
-            ennemy.move();
-            if(isCollisionDetected(player,player.getX(),player.getY(), ennemy,ennemy.getX(),ennemy.getY())){
+        for(Enemy enemy : enemies){
+            enemy.move();
+            if(isCollisionDetected(player,player.getX(),player.getY(), enemy,enemy.getX(),enemy.getY())){
                 Log.e("Collision","We touch a butterfly ! ");
                 onLoose();
             }
@@ -166,15 +166,15 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawCanvas(Canvas canvas) {
         background.draw(canvas);
         player.draw(canvas);
-        List<Ennemy> toRemove = new ArrayList<>();
-        for(Ennemy ennemy : new ArrayList<Ennemy>(ennemies)){
-            if(ennemy.getX() <= 0){
-                toRemove.add(ennemy);
+        List<Enemy> toRemove = new ArrayList<>();
+        for(Enemy enemy : new ArrayList<>(enemies)){
+            if(enemy.getX() <= 0){
+                toRemove.add(enemy);
             }else{
-                ennemy.draw(canvas);
+                enemy.draw(canvas);
             }
         }
-        ennemies.removeAll(toRemove);
+        enemies.removeAll(toRemove);
         if (start) {
             canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         } else if (gameOver){
@@ -205,7 +205,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Codé récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
+     * Code récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
      * Check pixel-perfectly if two views are colliding
      *
      * @param player player
@@ -217,7 +217,7 @@ public class GameView extends SurfaceView implements Runnable {
      * @return boolean
      */
     public static boolean isCollisionDetected(Player player, int x1, int y1,
-                                              Ennemy ennemy, int x2, int y2) {
+                                              Enemy ennemy, int x2, int y2) {
 
         Bitmap bitmap1 = player.getBitmap();
         Bitmap bitmap2 = ennemy.getBitmap();
