@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="network.iut.org.flappydragon.MenuGame">
+    tools:context="network.iut.org.flappydragon.View.MenuGame">
 
     <TextView
         android:id="@+id/created"
