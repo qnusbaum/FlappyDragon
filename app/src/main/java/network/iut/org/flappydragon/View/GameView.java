@@ -190,7 +190,7 @@ public class GameView extends SurfaceView implements Runnable {
                     builder.setPositiveButton(R.string.restart, new OkOnClickListener());
                     builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
                     AlertDialog dialog = builder.create();
-                    dialog.show();
+//                    dialog.show();
                 }
             });
         }
