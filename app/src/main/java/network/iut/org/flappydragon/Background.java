@@ -13,8 +13,8 @@ public class Background {
     private Bitmap background4;
     private Bitmap background5;
     private int xTranslation;
-    private int xTranslationArbre;
-    private int xTranslationSol;
+    private int xTranslationTree;
+    private int xTranslationGround;
 
 
     public Background(Context context, GameView view) {
@@ -49,29 +49,29 @@ public class Background {
          //Gestion des arbres
         canvas.drawBitmap(background4,
                 new Rect(0, 0, background1.getWidth(), background1.getHeight()),
-                new Rect(+xTranslationArbre, 0, width * background4.getWidth() /  background4.getHeight()+xTranslationArbre, height),
+                new Rect(+xTranslationTree, 0, width * background4.getWidth() /  background4.getHeight()+xTranslationTree, height),
                 null);
-        xTranslationArbre -=10;
+        xTranslationTree -=10;
         canvas.drawBitmap(background4,
                 new Rect(0, 0, background1.getWidth(), background1.getHeight()),
-                new Rect(background4.getWidth()+xTranslationArbre, 0, (width * background4.getWidth() /  background4.getHeight())*2+xTranslationArbre, height),
+                new Rect(background4.getWidth()+xTranslationTree, 0, (width * background4.getWidth() /  background4.getHeight())*2+xTranslationTree, height),
                 null);
-        if( xTranslationArbre <= -background1.getWidth()){
-            xTranslationArbre=0;
+        if( xTranslationTree <= -background1.getWidth()){
+            xTranslationTree=0;
         }
 
         //Gestion du sol
         canvas.drawBitmap(background5,
                 new Rect(0, 0, background5.getWidth(), background5.getHeight()),
-                new Rect(+xTranslationSol, 0, (width * background5.getWidth() /  background5.getHeight())+xTranslationSol, height),
+                new Rect(+xTranslationGround, 0, (width * background5.getWidth() /  background5.getHeight())+xTranslationGround, height),
                 null);
-        xTranslationSol -=10;
+        xTranslationGround -=10;
         canvas.drawBitmap(background5,
                 new Rect(0, 0, background5.getWidth(), background5.getHeight()),
-                new Rect(background5.getWidth()+xTranslationSol, 0, (width * background5.getWidth() /  background5.getHeight())*2+xTranslationSol, height),
+                new Rect(background5.getWidth()+xTranslationGround, 0, (width * background5.getWidth() /  background5.getHeight())*2+xTranslationGround, height),
                 null);
-        if( xTranslationSol <= -background5.getWidth()){
-            xTranslationSol=0;
+        if( xTranslationGround <= -background5.getWidth()){
+            xTranslationGround=0;
         }
     }
 }
