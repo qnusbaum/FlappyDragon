@@ -46,7 +46,7 @@ public class Player {
         this.imgWidth = this.bitmap.getWidth();
         this.imgHeight = this.bitmap.getHeight();
         this.frameTime = 3;		// the frame will change every 3 runs
-        this.y = height / 2;	// Startposition in the middle of the screen
+        this.y = height / 3;	// Startposition in the middle of the screen
 
         this.x = this.imgWidth / 6;
         this.speedX = 0;

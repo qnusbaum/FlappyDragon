@@ -1,6 +1,5 @@
 package network.iut.org.flappydragon.View;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -8,11 +7,13 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -178,29 +179,36 @@ public class GameView extends SurfaceView implements Runnable {
         if (start) {
             canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         } else if (gameOver){
+            //TODO : Corriger le bug ou l'on doit taper 2 fois l'écran pour recommencer
+            //TODO : Ajouter le score dans la modale ?
             getHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(R.string.youLoose);
-                    String messageScore = "";
-                    builder.setMessage(messageScore+" X secondes")
-                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    restartGame();
-                                }
-                            })
-                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    restartGame();
-                                }
-                            });
-                    Log.e("Restart","On veut restart le jeu");
                     builder.setCancelable(false);
+                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
+                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
             });
+        }
+    }
+
+    private final class CancelOnClickListener implements
+            DialogInterface.OnClickListener {
+        public void onClick(DialogInterface dialog, int which) {
+            System.exit(1);
+        }
+    }
+
+    private final class OkOnClickListener implements
+            DialogInterface.OnClickListener {
+        public void onClick(DialogInterface dialog, int which) {
+            Toast.makeText(context, "Taper deux fois l'écran pour recommencer !",
+                    Toast.LENGTH_LONG).show();
+            new GameActivity();
         }
     }
 

@@ -12,7 +12,7 @@ import network.iut.org.flappydragon.Util;
 /**
  * Classe Ennemy
  *
- * Cette classe permet de gérer les différents ennemy présents en jeu
+ * Cette classe permet de gérer les différents ennemies présents en jeu
  */
 public class Enemy {
     /**
