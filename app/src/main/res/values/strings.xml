@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">FlappyDragon</string>
-    <string name="noob">Noob</string>
-    <string name="casual">Casual</string>
-    <string name="pgm">PGM</string>
+    <string name="Noob">Noob</string>
+    <string name="Casual">Casual</string>
+    <string name="PGM">PGM</string>
     <string name="youLoose">Vous avez perdu ! </string>
     <string name="score">Votre score est de : </string>
     <string name="restart">Recommencer </string>

@@ -38,8 +38,17 @@ public class MenuGame extends Activity {
                 RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
                 int radioButtonID = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButtonChecked = (RadioButton) radioGroup.findViewById(radioButtonID);
-                String selectedtext = (String) radioButtonChecked.getText();
-                Log.e(selectedtext,selectedtext);
+                if (radioButtonChecked != null) {
+                    String selectedText = (String) radioButtonChecked.getText();
+//                    Log.e("textselected",selectedText);
+                    SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putInt("selectedDifficulte", level(selectedText));
+                    editor.commit();
+
+//                    Log.e("test", "test"+sharedPref.getInt("selectedDifficulte", 3));
+                    Log.e("test", "menu game"+sharedPref.contains("selectedDifficulte"));
+                }
                 initMenu();
             }
         });
@@ -50,11 +59,6 @@ public class MenuGame extends Activity {
         setContentView(R.layout.menu_game);
         Button jouer = (Button) findViewById(R.id.btnJouer);
         Button option = (Button) findViewById(R.id.btnOptions);
-
-//        SharedPreferences sharedPref = .getPreferences(Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPref.edit();
-//        editor.putInt(getString(R.string.saved_high_score_key), newHighScore);
-//        editor.commit();
 
         jouer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,5 +73,21 @@ public class MenuGame extends Activity {
                 initOption();
             }
         });
+    }
+
+    public int level(String difficulte) {
+        int level = 0;
+        switch (difficulte) {
+            case "Noob" :
+                level = 1;
+                break;
+            case "Casual" :
+                level = 2;
+                break;
+            case "PGM" :
+                level = 3;
+                break;
+        }
+        return level;
     }
 }

@@ -3,11 +3,13 @@ package network.iut.org.flappydragon.View;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -36,11 +38,29 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean gameOver = false;
     private Context context;
     private int vitesseSpawn;
+    private String status;
+//    private String selectedText;
+
+//    protected void onCreate(final Bundle savedInstanceState) {
+//        SharedPreferences sharedPref = context.getSharedPreferences("MenuGame", Context.MODE_PRIVATE);
+//        this.status = sharedPref.getInt("selectedDifficulte", 2);
+//    }
 
     public GameView(final Context context) {
         super(context);
-        vitesseSpawn = 500;
-        this.context = context;
+        this.context = context.getApplicationContext();
+        int defaultValue = 12;
+//        long highScore = sp.getInt("saved_score", defaultValue);
+        SharedPreferences sharedPref = context.getSharedPreferences("menu_game", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("testtttttt", 1);
+        editor.commit();
+        setVitesseSpawn(sharedPref.getInt("selectedDifficulte", 2));
+        Log.e("bonjour", "tostring : "+sharedPref.getAll().toString());
+//        Log.e("", "vrai value"+sharedPref.getInt("selectedDifficulte", 2));
+//        Log.e("testttt", "iciiiii"+sharedPref.getInt("testtttttt", 3));
+//        setVitesseSpawn(sharedPref.getInt("testtttttt", 3));
+        Log.e("test", "game view"+sharedPref.contains("selectedDifficulte"));
         player = new Player(context, this);
         ennemies = new ArrayList<>();
         background = new Background(context, this);
@@ -202,6 +222,22 @@ public class GameView extends SurfaceView implements Runnable {
                 }
             });
         }
+    }
+
+    private void setVitesseSpawn(int difficulte) {
+//        Log.e("dif","dif"+difficulte);
+        switch (difficulte) {
+            case 1 :
+                this.vitesseSpawn = 1000;
+                break;
+            case 2 :
+                this.vitesseSpawn = 500;
+                break;
+            case 3 :
+                this.vitesseSpawn = 150;
+                break;
+        }
+        Log.e("test", "test"+this.vitesseSpawn);
     }
 
     /**

@@ -81,21 +81,21 @@
             android:layout_width="wrap_content"
             android:layout_height="47dp"
             android:layout_weight="1"
-            android:text="@string/noob"/>
+            android:text="@string/Noob" />
 
         <RadioButton
             android:id="@+id/btnCasual"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
             android:layout_weight="1"
-            android:text="@string/casual"/>
+            android:text="@string/Casual" />
 
         <RadioButton
             android:id="@+id/btnPGM"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/pgm"/>
+            android:text="@string/PGM" />
 
     </RadioGroup>
 
