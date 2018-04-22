@@ -38,29 +38,12 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean gameOver = false;
     private Context context;
     private int vitesseSpawn;
-    private String status;
-//    private String selectedText;
-
-//    protected void onCreate(final Bundle savedInstanceState) {
-//        SharedPreferences sharedPref = context.getSharedPreferences("MenuGame", Context.MODE_PRIVATE);
-//        this.status = sharedPref.getInt("selectedDifficulte", 2);
-//    }
 
     public GameView(final Context context) {
         super(context);
         this.context = context.getApplicationContext();
         int defaultValue = 12;
-//        long highScore = sp.getInt("saved_score", defaultValue);
-        SharedPreferences sharedPref = context.getSharedPreferences("menu_game", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("testtttttt", 1);
-        editor.commit();
-        setVitesseSpawn(sharedPref.getInt("selectedDifficulte", 2));
-        Log.e("bonjour", "tostring : "+sharedPref.getAll().toString());
-//        Log.e("", "vrai value"+sharedPref.getInt("selectedDifficulte", 2));
-//        Log.e("testttt", "iciiiii"+sharedPref.getInt("testtttttt", 3));
-//        setVitesseSpawn(sharedPref.getInt("testtttttt", 3));
-        Log.e("test", "game view"+sharedPref.contains("selectedDifficulte"));
+        setVitesseSpawn(MenuGame.diff);
         player = new Player(context, this);
         ennemies = new ArrayList<>();
         background = new Background(context, this);
@@ -225,7 +208,6 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void setVitesseSpawn(int difficulte) {
-//        Log.e("dif","dif"+difficulte);
         switch (difficulte) {
             case 1 :
                 this.vitesseSpawn = 1000;
