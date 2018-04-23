@@ -17,7 +17,7 @@ import network.iut.org.flappydragon.R;
  */
 
 public class MenuGame extends Activity {
-    public static int diff;
+    public static int choixDifficulte = 1;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class MenuGame extends Activity {
 
 //                    Log.e("test", "test"+sharedPref.getInt("selectedDifficulte", 3));
                     Log.e("test", "menu game"+sharedPref.contains("selectedDifficulte"));
-                    diff = sharedPref.getInt("selectedDifficulte", 3);
+                    choixDifficulte = sharedPref.getInt("selectedDifficulte", 3);
                 }
                 initMenu();
             }

@@ -38,13 +38,13 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean start = true;
     private boolean gameOver = false;
     private Context context;
-    private int speedSpawn;
+    private int vitesseSpawn;
 
     public GameView(final Context context) {
         super(context);
         this.context = context.getApplicationContext();
         int defaultValue = 12;
-        setVitesseSpawn(MenuGame.diff);
+        setVitesseSpawn(MenuGame.choixDifficulte);
         player = new Player(context, this);
         enemies = new ArrayList<>();
         background = new Background(context, this);
@@ -59,7 +59,7 @@ public class GameView extends SurfaceView implements Runnable {
                     enemies.add(new Enemy(context,10));
                 }
             }
-        }, 0, speedSpawn);
+        }, 0, vitesseSpawn);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -171,11 +171,11 @@ public class GameView extends SurfaceView implements Runnable {
         background.draw(canvas);
         player.draw(canvas);
         List<Enemy> toRemove = new ArrayList<>();
-        for(Enemy enemy : new ArrayList<>(enemies)){
-            if(enemy.getX() <= 0){
-                toRemove.add(enemy);
+        for(Enemy ennemy : new ArrayList<>(enemies)){
+            if(ennemy.getX() <= 0){
+                toRemove.add(ennemy);
             }else{
-                enemy.draw(canvas);
+                ennemy.draw(canvas);
             }
         }
         enemies.removeAll(toRemove);
@@ -188,25 +188,13 @@ public class GameView extends SurfaceView implements Runnable {
                 @Override
                 public void run() {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle(R.string.youLoose);
-//                    String messageScore = "";
-//                    builder.setMessage(messageScore+" X secondes")
-//                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    restartGame();
-//                                }
-//                            })
-//                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    restartGame();
-//                                }
-//                            });
-//                    Log.e("Restart","On veut restart le jeu");
-                    builder.setCancelable(false);
-                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
-                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
-                    AlertDialog dialog = builder.create();
+//                    builder.setMessage(R.string.textRestart);
+//                    builder.setCancelable(false);
+//                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
+//                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
+//                    AlertDialog dialog = builder.create();
 //                    dialog.show();
+                    builder.show();
                 }
             });
         }
@@ -227,6 +215,68 @@ public class GameView extends SurfaceView implements Runnable {
             new GameActivity();
         }
     }
+
+//    private void drawCanvas(Canvas canvas) {
+//        background.draw(canvas);
+//        player.draw(canvas);
+//        List<Enemy> toRemove = new ArrayList<>();
+//        for(Enemy enemy : new ArrayList<>(enemies)){
+//            if(enemy.getX() <= 0){
+//                toRemove.add(enemy);
+//            }else{
+//                enemy.draw(canvas);
+//            }
+//        }
+//        enemies.removeAll(toRemove);
+//        if (start) {
+//            canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
+//        } else if (gameOver){
+//            //TODO : Corriger le bug ou l'on doit taper 2 fois l'écran pour recommencer
+//            //TODO : Ajouter le score dans la modale ?
+//            Log.e("", "ici tu perd");
+//            getHandler().post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                    builder.setTitle(R.string.youLoose);
+//                    String messageScore = "";
+//                    builder.setMessage(messageScore+" X secondes")
+//                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    restartGame();
+//                                }
+//                            })
+//                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    restartGame();
+//                                }
+//                            });
+//                    Log.e("Restart","On veut restart le jeu");
+//                    builder.setCancelable(false);
+//                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
+//                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                }
+//            });
+//        }
+//    }
+//
+//    private final class CancelOnClickListener implements
+//            DialogInterface.OnClickListener {
+//        public void onClick(DialogInterface dialog, int which) {
+//            System.exit(1);
+//        }
+//    }
+//
+//    private final class OkOnClickListener implements
+//            DialogInterface.OnClickListener {
+//        public void onClick(DialogInterface dialog, int which) {
+//            Toast.makeText(context, "Taper deux fois l'écran pour recommencer !",
+//                    Toast.LENGTH_LONG).show();
+//            new GameActivity();
+//        }
+//    }
 
     private void setVitesseSpawn(int difficulte) {
         switch (difficulte) {
