@@ -5,10 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
-import android.view.View;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import network.iut.org.flappydragon.R;
 import network.iut.org.flappydragon.Util;
@@ -16,9 +12,9 @@ import network.iut.org.flappydragon.Util;
 /**
  * Classe Ennemy
  *
- * Cette classe permet de gérer les différents ennemy présents en jeu
+ * Cette classe permet de gérer les différents ennemies présents en jeu
  */
-public class Ennemy {
+public class Enemy {
     /**
      * Static bitmap to reduce memory usage.
      */
@@ -35,7 +31,7 @@ public class Ennemy {
     private float speedX;
     private float speedY;
 
-    public Ennemy(Context context,int speedX) {
+    public Enemy(Context context,int speedX) {
         int height = context.getResources().getDisplayMetrics().heightPixels;
         int width = context.getResources().getDisplayMetrics().widthPixels;
         if(globalBitmap == null) {

@@ -1,6 +1,5 @@
 package network.iut.org.flappydragon.View;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -9,12 +8,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.TimerTask;
 
 import network.iut.org.flappydragon.Background;
 import network.iut.org.flappydragon.R;
-import network.iut.org.flappydragon.entity.Ennemy;
+import network.iut.org.flappydragon.entity.Enemy;
 import network.iut.org.flappydragon.entity.Player;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -32,12 +33,12 @@ public class GameView extends SurfaceView implements Runnable {
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Player player;
-    private List<Ennemy> ennemies;
+    private List<Enemy> enemies;
     private Background background;
     private boolean start = true;
     private boolean gameOver = false;
     private Context context;
-    private int vitesseSpawn;
+    private int speedSpawn;
 
     public GameView(final Context context) {
         super(context);
@@ -45,7 +46,7 @@ public class GameView extends SurfaceView implements Runnable {
         int defaultValue = 12;
         setVitesseSpawn(MenuGame.diff);
         player = new Player(context, this);
-        ennemies = new ArrayList<>();
+        enemies = new ArrayList<>();
         background = new Background(context, this);
         holder = getHolder();
         //On créer un timer afin de créer des ennemis à intervalle de temps régulier
@@ -55,10 +56,10 @@ public class GameView extends SurfaceView implements Runnable {
             public void run() {
                 if(!start) {
                     Log.e("Enemy", "Create a new enemy");
-                    ennemies.add(new Ennemy(context,10));
+                    enemies.add(new Enemy(context,10));
                 }
             }
-        }, 0, vitesseSpawn);
+        }, 0, speedSpawn);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -100,7 +101,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void restartGame() {
         this.player = new Player(context, this);
         gameOver = false;
-        ennemies.clear();
+        enemies.clear();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -139,9 +140,9 @@ public class GameView extends SurfaceView implements Runnable {
     @Override
     public void run() {
         Log.e("RUN","On run l'application");
-        for(Ennemy ennemy : ennemies){
-            ennemy.move();
-            if(isCollisionDetected(player,player.getX(),player.getY(), ennemy,ennemy.getX(),ennemy.getY())){
+        for(Enemy enemy : enemies){
+            enemy.move();
+            if(isCollisionDetected(player,player.getX(),player.getY(), enemy,enemy.getX(),enemy.getY())){
                 Log.e("Collision","We touch a butterfly ! ");
                 onLoose();
             }
@@ -169,41 +170,61 @@ public class GameView extends SurfaceView implements Runnable {
     private void drawCanvas(Canvas canvas) {
         background.draw(canvas);
         player.draw(canvas);
-        List<Ennemy> toRemove = new ArrayList<>();
-        for(Ennemy ennemy : new ArrayList<Ennemy>(ennemies)){
-            if(ennemy.getX() <= 0){
-                toRemove.add(ennemy);
+        List<Enemy> toRemove = new ArrayList<>();
+        for(Enemy enemy : new ArrayList<>(enemies)){
+            if(enemy.getX() <= 0){
+                toRemove.add(enemy);
             }else{
-                ennemy.draw(canvas);
+                enemy.draw(canvas);
             }
         }
-        ennemies.removeAll(toRemove);
+        enemies.removeAll(toRemove);
         if (start) {
             canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         } else if (gameOver){
+            //TODO : Corriger le bug ou l'on doit taper 2 fois l'écran pour recommencer
+            //TODO : Ajouter le score dans la modale ?
             getHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(R.string.youLoose);
-                    String messageScore = "";
-                    builder.setMessage(messageScore+" X secondes")
-                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    restartGame();
-                                }
-                            })
-                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    restartGame();
-                                }
-                            });
-                    Log.e("Restart","On veut restart le jeu");
+//                    String messageScore = "";
+//                    builder.setMessage(messageScore+" X secondes")
+//                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    restartGame();
+//                                }
+//                            })
+//                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    restartGame();
+//                                }
+//                            });
+//                    Log.e("Restart","On veut restart le jeu");
                     builder.setCancelable(false);
+                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
+                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
                     AlertDialog dialog = builder.create();
-                    dialog.show();
+//                    dialog.show();
                 }
             });
+        }
+    }
+
+    private final class CancelOnClickListener implements
+            DialogInterface.OnClickListener {
+        public void onClick(DialogInterface dialog, int which) {
+            System.exit(1);
+        }
+    }
+
+    private final class OkOnClickListener implements
+            DialogInterface.OnClickListener {
+        public void onClick(DialogInterface dialog, int which) {
+            Toast.makeText(context, "Taper deux fois l'écran pour recommencer !",
+                    Toast.LENGTH_LONG).show();
+            new GameActivity();
         }
     }
 
@@ -223,7 +244,7 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     /**
-     * Codé récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
+     * Code récupéré sur https://medium.com/@euryperez/android-pearls-pixel-perfect-collision-detection-with-no-framework-53a5137baca2
      * Check pixel-perfectly if two views are colliding
      *
      * @param player player
@@ -235,7 +256,7 @@ public class GameView extends SurfaceView implements Runnable {
      * @return boolean
      */
     public static boolean isCollisionDetected(Player player, int x1, int y1,
-                                              Ennemy ennemy, int x2, int y2) {
+                                              Enemy ennemy, int x2, int y2) {
 
         Bitmap bitmap1 = player.getBitmap();
         Bitmap bitmap2 = ennemy.getBitmap();
