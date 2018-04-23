@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import network.iut.org.flappydragon.View.MenuGame;
 import network.iut.org.flappydragon.entity.Ennemy;
 import network.iut.org.flappydragon.entity.Player;
 
@@ -38,8 +39,9 @@ public class GameView extends SurfaceView implements Runnable {
 
     public GameView(final Context context) {
         super(context);
-        vitesseSpawn = 500;
-        this.context = context;
+        this.context = context.getApplicationContext();
+        int defaultValue = 12;
+        setVitesseSpawn(MenuGame.choixDifficulte);
         player = new Player(context, this);
         ennemies = new ArrayList<>();
         background = new Background(context, this);
@@ -167,7 +169,7 @@ public class GameView extends SurfaceView implements Runnable {
         background.draw(canvas);
         player.draw(canvas);
         List<Ennemy> toRemove = new ArrayList<>();
-        for(Ennemy ennemy : new ArrayList<Ennemy>(ennemies)){
+        for(Ennemy ennemy : new ArrayList<>(ennemies)){
             if(ennemy.getX() <= 0){
                 toRemove.add(ennemy);
             }else{
@@ -190,6 +192,13 @@ public class GameView extends SurfaceView implements Runnable {
                     builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
                     AlertDialog dialog = builder.create();
                     dialog.show();
+//                    builder.setMessage(R.string.textRestart);
+//                    builder.setCancelable(false);
+//                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
+//                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                    builder.show();
                 }
             });
         }
@@ -209,6 +218,83 @@ public class GameView extends SurfaceView implements Runnable {
                     Toast.LENGTH_LONG).show();
             new GameActivity();
         }
+    }
+
+//    private void drawCanvas(Canvas canvas) {
+//        background.draw(canvas);
+//        player.draw(canvas);
+//        List<Enemy> toRemove = new ArrayList<>();
+//        for(Enemy enemy : new ArrayList<>(enemies)){
+//            if(enemy.getX() <= 0){
+//                toRemove.add(enemy);
+//            }else{
+//                enemy.draw(canvas);
+//            }
+//        }
+//        enemies.removeAll(toRemove);
+//        if (start) {
+//            canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
+//        } else if (gameOver){
+//            //TODO : Corriger le bug ou l'on doit taper 2 fois l'écran pour recommencer
+//            //TODO : Ajouter le score dans la modale ?
+//            Log.e("", "ici tu perd");
+//            getHandler().post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                    builder.setTitle(R.string.youLoose);
+//                    String messageScore = "";
+//                    builder.setMessage(messageScore+" X secondes")
+//                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    restartGame();
+//                                }
+//                            })
+//                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    restartGame();
+//                                }
+//                            });
+//                    Log.e("Restart","On veut restart le jeu");
+//                    builder.setCancelable(false);
+//                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
+//                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
+//                }
+//            });
+//        }
+//    }
+//
+//    private final class CancelOnClickListener implements
+//            DialogInterface.OnClickListener {
+//        public void onClick(DialogInterface dialog, int which) {
+//            System.exit(1);
+//        }
+//    }
+//
+//    private final class OkOnClickListener implements
+//            DialogInterface.OnClickListener {
+//        public void onClick(DialogInterface dialog, int which) {
+//            Toast.makeText(context, "Taper deux fois l'écran pour recommencer !",
+//                    Toast.LENGTH_LONG).show();
+//            new GameActivity();
+//        }
+//    }
+
+    private void setVitesseSpawn(int difficulte) {
+        switch (difficulte) {
+            case 1 :
+                this.vitesseSpawn = 1000;
+                break;
+            case 2 :
+                this.vitesseSpawn = 500;
+                break;
+            case 3 :
+                this.vitesseSpawn = 150;
+                break;
+        }
+        Log.e("test", "test"+this.vitesseSpawn);
     }
 
     /**
