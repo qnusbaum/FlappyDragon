@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.util.Log;
 
-import network.iut.org.flappydragon.GameView;
+import network.iut.org.flappydragon.View.GameView;
 import network.iut.org.flappydragon.R;
 import network.iut.org.flappydragon.Util;
 

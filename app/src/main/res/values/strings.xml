@@ -5,4 +5,7 @@
     <string name="restart">Recommencer </string>
     <string name="textRestart">Voulez-vous recommencer ? </string>
     <string name="goMenu">Retour au menu </string>
+    <string name="Noob">Noob </string>
+    <string name="Casual">Casual </string>
+    <string name="PGM">PGM </string>
 </resources>

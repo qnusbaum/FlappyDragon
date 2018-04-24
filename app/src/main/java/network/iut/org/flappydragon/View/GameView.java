@@ -1,4 +1,4 @@
-package network.iut.org.flappydragon;
+package network.iut.org.flappydragon.View;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,7 +20,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import network.iut.org.flappydragon.View.MenuGame;
+import network.iut.org.flappydragon.Background;
+import network.iut.org.flappydragon.GameActivity;
+import network.iut.org.flappydragon.R;
 import network.iut.org.flappydragon.entity.Ennemy;
 import network.iut.org.flappydragon.entity.Player;
 
