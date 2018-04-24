@@ -1,6 +1,7 @@
 package network.iut.org.flappydragon.View;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;

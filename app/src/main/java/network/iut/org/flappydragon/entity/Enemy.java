@@ -14,7 +14,7 @@ import network.iut.org.flappydragon.Util;
  *
  * Cette classe permet de gérer les différents ennemies présents en jeu
  */
-public class Ennemy {
+public class Enemy {
     /**
      * Static bitmap to reduce memory usage.
      */
@@ -31,7 +31,7 @@ public class Ennemy {
     private float speedX;
     private float speedY;
 
-    public Ennemy(Context context, int speedX) {
+    public Enemy(Context context,int speedX) {
         int height = context.getResources().getDisplayMetrics().heightPixels;
         int width = context.getResources().getDisplayMetrics().widthPixels;
         if(globalBitmap == null) {
