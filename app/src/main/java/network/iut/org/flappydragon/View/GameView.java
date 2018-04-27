@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,13 +24,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import network.iut.org.flappydragon.Background;
-import network.iut.org.flappydragon.View.GameActivity;
+import network.iut.org.flappydragon.Util;
 import network.iut.org.flappydragon.R;
 import network.iut.org.flappydragon.entity.Enemy;
 import network.iut.org.flappydragon.entity.Player;
 
 public class GameView extends SurfaceView implements Runnable {
     public static final long UPDATE_INTERVAL = 10; // = 20 FPS
+    private int defaultValue = 10;
     private SurfaceHolder holder;
     private Timer timer = new Timer();
     private TimerTask timerTask;
@@ -40,11 +42,13 @@ public class GameView extends SurfaceView implements Runnable {
     private boolean gameOver = false;
     private Context context;
     private int vitesseSpawn;
+    Bitmap home;
 
     public GameView(final Context context) {
         super(context);
         this.context = context.getApplicationContext();
-        int defaultValue = 12;
+        //try to initialize a home button to go back to menu page
+        home = Util.decodeSampledBitmapFromResource(context.getResources(), R.drawable.home, 100, 100);
         setVitesseSpawn(MenuGame.choixDifficulte);
         player = new Player(context, this);
         enemies = new ArrayList<>();
@@ -57,7 +61,7 @@ public class GameView extends SurfaceView implements Runnable {
             public void run() {
                 if(!start) {
                     Log.e("Enemy", "Create a new enemy");
-                    enemies.add(new Enemy(context,10));
+                    enemies.add(new Enemy(context,defaultValue));
                 }
             }
         }, 0, vitesseSpawn);
@@ -169,8 +173,16 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
     private void drawCanvas(Canvas canvas) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
         background.draw(canvas);
         player.draw(canvas);
+        Paint paint = new Paint();
+        paint.setTextSize(30);
+        //try to display the home button to go back to menu page
+        canvas.drawBitmap(home, canvas.getWidth() * 14 , canvas.getHeight() * 24, paint);
+        canvas.drawText("Meilleur score : " + prefs.getInt("hightscore", 0), canvas.getWidth() / 14, canvas.getHeight() / 24, paint);
+        canvas.drawText("Score : "+enemies.size(), canvas.getWidth() / 14, canvas.getHeight() / 17, paint);
         List<Enemy> toRemove = new ArrayList<>();
         for(Enemy ennemy : new ArrayList<>(enemies)){
             if(ennemy.getX() <= 0){
@@ -183,100 +195,40 @@ public class GameView extends SurfaceView implements Runnable {
         if (start) {
             canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
         } else if (gameOver){
-            //TODO : Corriger le bug ou l'on doit taper 2 fois l'écran pour recommencer
-            //TODO : Ajouter le score dans la modale ?
             getHandler().post(new Runnable() {
                 @Override
                 public void run() {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage(R.string.textRestart);
-                    builder.setCancelable(false);
-                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
-                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    //TODO : We tryed this, it worked on a branch but after merging or on other branch, it doesn't work anymore
+                    //TODO : I let it commented in order you can maybe explain us why it cause a crash of the app
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                    builder.setMessage(R.string.textRestart);
+//                    builder.setCancelable(false);
+//                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
+//                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
+//                    AlertDialog dialog = builder.create();
+//                    dialog.show();
                 }
             });
         }
+        if (enemies.size() > prefs.getInt("hightscore", 0)) {
+            editor.putInt("hightscore", enemies.size());
+            editor.commit();
+        }
     }
 
-    private final class CancelOnClickListener implements
-            DialogInterface.OnClickListener {
+    private final class CancelOnClickListener implements DialogInterface.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
             System.exit(1);
         }
     }
 
-    private final class OkOnClickListener implements
-            DialogInterface.OnClickListener {
+    private final class OkOnClickListener implements DialogInterface.OnClickListener {
         public void onClick(DialogInterface dialog, int which) {
             Toast.makeText(context, "Taper deux fois l'écran pour recommencer !",
                     Toast.LENGTH_LONG).show();
             new GameActivity();
         }
     }
-
-//    private void drawCanvas(Canvas canvas) {
-//        background.draw(canvas);
-//        player.draw(canvas);
-//        List<Enemy> toRemove = new ArrayList<>();
-//        for(Enemy enemy : new ArrayList<>(enemies)){
-//            if(enemy.getX() <= 0){
-//                toRemove.add(enemy);
-//            }else{
-//                enemy.draw(canvas);
-//            }
-//        }
-//        enemies.removeAll(toRemove);
-//        if (start) {
-//            canvas.drawText("START", canvas.getWidth() / 2, canvas.getHeight() / 2, new Paint());
-//        } else if (gameOver){
-//            //TODO : Corriger le bug ou l'on doit taper 2 fois l'écran pour recommencer
-//            //TODO : Ajouter le score dans la modale ?
-//            Log.e("", "ici tu perd");
-//            getHandler().post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//                    builder.setTitle(R.string.youLoose);
-//                    String messageScore = "";
-//                    builder.setMessage(messageScore+" X secondes")
-//                            .setPositiveButton(R.string.restart, new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    restartGame();
-//                                }
-//                            })
-//                            .setNegativeButton(R.string.goMenu, new DialogInterface.OnClickListener() {
-//                                public void onClick(DialogInterface dialog, int id) {
-//                                    restartGame();
-//                                }
-//                            });
-//                    Log.e("Restart","On veut restart le jeu");
-//                    builder.setCancelable(false);
-//                    builder.setPositiveButton(R.string.restart, new OkOnClickListener());
-//                    builder.setNegativeButton(R.string.goMenu, new CancelOnClickListener());
-//                    AlertDialog dialog = builder.create();
-//                    dialog.show();
-//                }
-//            });
-//        }
-//    }
-//
-//    private final class CancelOnClickListener implements
-//            DialogInterface.OnClickListener {
-//        public void onClick(DialogInterface dialog, int which) {
-//            System.exit(1);
-//        }
-//    }
-//
-//    private final class OkOnClickListener implements
-//            DialogInterface.OnClickListener {
-//        public void onClick(DialogInterface dialog, int which) {
-//            Toast.makeText(context, "Taper deux fois l'écran pour recommencer !",
-//                    Toast.LENGTH_LONG).show();
-//            new GameActivity();
-//        }
-//    }
 
     private void setVitesseSpawn(int difficulte) {
         switch (difficulte) {
@@ -288,9 +240,9 @@ public class GameView extends SurfaceView implements Runnable {
                 break;
             case 3 :
                 this.vitesseSpawn = 150;
+                this.defaultValue = 20;
                 break;
         }
-        Log.e("test", "test"+this.vitesseSpawn);
     }
 
     /**

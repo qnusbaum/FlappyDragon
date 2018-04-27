@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ public class MenuGame extends Activity {
     public void initOption() {
         setContentView(R.layout.options);
         Button retour = (Button) findViewById(R.id.btnRetour);
+        Button reset = (Button) findViewById(R.id.reset);
 
         retour.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,19 +44,28 @@ public class MenuGame extends Activity {
                 if (radioButtonChecked != null) {
                     String selectedText = (String) radioButtonChecked.getText();
 //                    Log.e("textselected",selectedText);
-                    SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putInt("selectedDifficulte", level(selectedText));
-                    editor.commit();
+//                    SharedPreferences sharedPref = getPreferences(MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = sharedPref.edit();
+//                    editor.putInt("selectedDifficulte", level(selectedText));
+//                    editor.commit();
 
 //                    Log.e("test", "test"+sharedPref.getInt("selectedDifficulte", 3));
-                    Log.e("test", "menu game"+sharedPref.contains("selectedDifficulte"));
-                    choixDifficulte = sharedPref.getInt("selectedDifficulte", 3);
+//                    Log.e("test", "menu game"+sharedPref.contains("selectedDifficulte"));
+//                    choixDifficulte = sharedPref.getInt("selectedDifficulte", 3);
                 }
                 initMenu();
             }
         });
 
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.clear();
+                editor.commit();
+            }
+        });
     }
 
     public void initMenu() {
